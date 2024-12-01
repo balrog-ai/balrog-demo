@@ -25,7 +25,7 @@ def make_env(env_name, task, config, render_mode=None):
 
         base_env = make_minihack_env(env_name, task, config, render_mode=render_mode)
     elif env_name == "babyai":
-        from balrog_demo.envs.babyai_text.babyai_env import make_babyai_env
+        from balrog_demo.envs.babyai.babyai_env import make_babyai_env
 
         base_env = make_babyai_env(env_name, task, config, render_mode=render_mode)
     elif env_name == "crafter":
