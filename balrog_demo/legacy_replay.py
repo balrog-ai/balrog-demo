@@ -1,17 +1,14 @@
-import pprint
+import pickle
 import random
 import timeit
+from pathlib import Path
 
 import numpy as np
 
 from balrog_demo.envs import make_env
 
 
-def get_random_action(env, mode, obs):
-    return env.action_space.sample()
-
-
-def play(cfg, get_action=get_random_action):
+def replay(cfg):
     render_mode = "human"
     if cfg.no_render:
         render_mode = None
@@ -26,18 +23,26 @@ def play(cfg, get_action=get_random_action):
     steps = 0
     reward = 0.0
     total_reward = 0.0
-    action = None
 
     total_start_time = timeit.default_timer()
     start_time = total_start_time
 
-    while True:
-        action = get_action(env, cfg.play_mode, obs)
-        if action is None:
-            break
+    savedir = Path(cfg.replay_path) / cfg.env / cfg.task
+    game_name = f"seed_{cfg.seed}"
+    paths = [path.stem for path in savedir.iterdir() if game_name in path.stem]
+    if paths:
+        game_name = paths[0]
+    game_path = Path(savedir) / f"{game_name}.demo"
 
-        obs, reward, terminated, truncated, info = env.step(action)
+    with open(game_path, "rb") as f:
+        data = pickle.load(f)
 
+    recorded_actions = data["actions"]
+    recorded_rewards = data["rewards"]
+
+    for i, (recorded_action, recorded_reward) in enumerate(zip(recorded_actions, recorded_rewards)):
+        obs, reward, terminated, truncated, info = env.step(env.get_wrapper_attr("get_text_action")(recorded_action))
+        # assert reward == recorded_reward
         steps += 1
         total_reward += reward
 
@@ -48,10 +53,11 @@ def play(cfg, get_action=get_random_action):
 
         if cfg.verbose:
             print("Final reward:", reward)
+            print("End status:", info.get("end_status", ""))
             print(f"Total reward: {total_reward}, Steps: {steps}, SPS: {steps / time_delta}", total_reward)
-            pprint.pprint(info)
 
         break
+
     env.close()
 
     return info

@@ -56,3 +56,13 @@ def add_extra_params_demo(parser: ArgumentParser):
     )
     p.add_argument("--save_every_k", default=100000, type=int, help="save checkpoint every kth step.")
     p.add_argument("--record", type=str, default=None)
+
+
+def add_extra_params_replay(parser):
+    p = parser
+    p.add_argument(
+        "--replay_path",
+        type=str,
+        default=None,
+        help="Path to the demo file to replay",
+    )

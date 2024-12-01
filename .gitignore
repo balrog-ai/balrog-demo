@@ -145,5 +145,6 @@ artifacts
 
 cmake-build*
 records
+demos
 tw_games
 tw-games.zip
