@@ -67,19 +67,22 @@ class VideoRecorder(gym.Wrapper):
 
     def reset(self, **kwargs):
         obs, info = super().reset(**kwargs)
-        self._frames = [obs["image"]]
+        if obs["image"]:
+            self._frames = [obs["image"]]
         return obs, info
 
     def step(self, action):
         obs, reward, terminated, truncated, info = super().step(action)
-        self._frames.append(obs["image"])
+        if obs["image"]:
+            self._frames.append(obs["image"])
         if terminated or truncated:
             self._save()
         return obs, reward, terminated, truncated, info
 
     def _save(self):
-        filename = str(self._directory / (self.env.episode_name + ".mp4"))
-        imageio.mimsave(filename, self._frames)
+        if self._frames:
+            filename = str(self._directory / (self.env.episode_name + ".mp4"))
+            imageio.mimsave(filename, self._frames)
 
 
 class EpisodeRecorder(gym.Wrapper):
