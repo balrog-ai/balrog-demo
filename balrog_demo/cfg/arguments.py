@@ -4,7 +4,6 @@ import sys
 from typing import List, Optional, Tuple
 
 from balrog_demo.cfg.cfg import add_basic_cli_args, add_default_env_args
-from balrog_demo.utils.utils import get_git_commit_hash
 
 
 def parse_args(
@@ -69,5 +68,4 @@ def postprocess_args(args, argv, parser) -> argparse.Namespace:
             del cli_args.__dict__[arg_name]
 
     args.cli_args = vars(cli_args)
-    args.git_hash, args.git_repo_name = get_git_commit_hash()
     return args
