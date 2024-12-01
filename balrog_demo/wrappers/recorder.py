@@ -1,3 +1,5 @@
+# havily inspired by crafter recorder https://github.com/danijar/crafter/blob/main/crafter/recorder.py
+
 import datetime
 import json
 import pathlib
