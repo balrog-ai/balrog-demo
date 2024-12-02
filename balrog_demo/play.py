@@ -8,7 +8,7 @@ from balrog_demo.envs import make_env
 
 
 def play(cfg):
-    render_mode = "human"
+    render_mode = cfg.render_mode
     if cfg.no_render:
         render_mode = None
 

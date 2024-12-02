@@ -4,9 +4,10 @@ from typing import Optional
 import gymnasium as gym
 import minigrid
 from balrog.environments.babyai_text.clean_lang_wrapper import BabyAITextCleanLangWrapper
+from balrog.environments.env_wrapper import EnvWrapper
 
 from balrog_demo.envs.babyai.play_wrapper import PlayBabyAIWrapper
-from balrog_demo.wrappers.recorder import Recorder
+from balrog_demo.wrappers import PlayTextWrapper, Recorder
 
 minigrid.register_minigrid_envs()
 
@@ -37,6 +38,8 @@ BABYAI_ENVS += [
 
 
 def make_babyai_env(env_name, task, config, render_mode: Optional[str] = None):
+    render_mode = None if config.text_observation else render_mode
+
     if task.startswith("BabyAI-MixedTrainLocal-v0/"):
         base_task, goal = task.split("/")
         while 1:
@@ -46,7 +49,13 @@ def make_babyai_env(env_name, task, config, render_mode: Optional[str] = None):
 
     env_kwargs = dict()
     env = BabyAITextCleanLangWrapper(env, **env_kwargs)
-    env = PlayBabyAIWrapper(env)
+    env = EnvWrapper(env, env_name, task)
+
+    if config.text_observation:
+        env = PlayTextWrapper(env)
+    else:
+        env = PlayBabyAIWrapper(env)
+
     env = Recorder(env, Path(config.record) / env_name / task)
 
     return env

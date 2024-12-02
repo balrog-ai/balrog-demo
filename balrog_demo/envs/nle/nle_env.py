@@ -3,11 +3,12 @@ from typing import Optional
 
 import gym
 import nle  # NOQA: F401
+from balrog.environments.env_wrapper import EnvWrapper
 from balrog.environments.nle import NLELanguageWrapper
 from balrog.environments.wrappers import GymV21CompatibilityV0
 
 from balrog_demo.envs.nle.play_wrapper import PlayNLEWrapper
-from balrog_demo.wrappers.recorder import Recorder
+from balrog_demo.wrappers import PlayTextWrapper, Recorder
 
 NETHACK_ENVS = []
 for env_spec in gym.envs.registry.all():
@@ -17,6 +18,8 @@ for env_spec in gym.envs.registry.all():
 
 
 def make_nle_env(env_name, task, config, render_mode: Optional[str] = None):
+    render_mode = None if config.text_observation else render_mode
+
     observation_keys = (
         "glyphs",
         "blstats",
@@ -47,8 +50,15 @@ def make_nle_env(env_name, task, config, render_mode: Optional[str] = None):
 
     env = gym.make(task, **kwargs)
     env = NLELanguageWrapper(env, vlm=config.vlm, skip_more=config.skip_more)
-    env = PlayNLEWrapper(env)
+
+    if not config.text_observation:
+        env = PlayNLEWrapper(env)
+
     env = GymV21CompatibilityV0(env=env, render_mode=render_mode)
+    env = EnvWrapper(env, env_name, task)
+
+    if config.text_observation:
+        env = PlayTextWrapper(env)
     env = Recorder(env, Path(config.record) / env_name / task)
 
     return env

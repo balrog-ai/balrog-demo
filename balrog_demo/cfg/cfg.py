@@ -39,6 +39,7 @@ def add_default_env_args(p: ArgumentParser):
         choices=["human", "full", "ansi"],
         help="Render mode. Defaults to 'human'.",
     )
+    p.add_argument("--text_observation", type=str2bool, default=False, help="Use text observation.")
 
 
 def add_extra_params_demo(parser: ArgumentParser):
