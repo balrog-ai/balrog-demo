@@ -6,6 +6,7 @@ import nle  # NOQA: F401
 from balrog.environments.nle import NLELanguageWrapper
 from balrog.environments.wrappers import GymV21CompatibilityV0
 
+from balrog_demo.envs.nle.play_wrapper import PlayNLEWrapper
 from balrog_demo.wrappers.recorder import Recorder
 
 NETHACK_ENVS = []
@@ -46,6 +47,7 @@ def make_nle_env(env_name, task, config, render_mode: Optional[str] = None):
 
     env = gym.make(task, **kwargs)
     env = NLELanguageWrapper(env, vlm=config.vlm, skip_more=config.skip_more)
+    env = PlayNLEWrapper(env)
     env = GymV21CompatibilityV0(env=env, render_mode=render_mode)
     env = Recorder(env, Path(config.record) / env_name / task)
 

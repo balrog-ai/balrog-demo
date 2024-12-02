@@ -1,5 +1,3 @@
-import pygame
-
 from balrog_demo.cfg.arguments import parse_args, parse_full_cfg
 from balrog_demo.cfg.cfg import add_extra_params_demo
 from balrog_demo.envs.textworld.textworld_params import add_extra_params_textworld_env, textworld_override_defaults
@@ -15,14 +13,9 @@ def parse_textworld_args(argv=None):
     return final_cfg
 
 
-def get_action(env, mode, typing):
-    command = input("> ")
-    return command
-
-
 def main():
     cfg = parse_textworld_args()
-    play(cfg, get_action=get_action)
+    play(cfg)
 
 
 if __name__ == "__main__":

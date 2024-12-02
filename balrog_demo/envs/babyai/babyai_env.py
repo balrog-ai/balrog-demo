@@ -5,6 +5,7 @@ import gymnasium as gym
 import minigrid
 from balrog.environments.babyai_text.clean_lang_wrapper import BabyAITextCleanLangWrapper
 
+from balrog_demo.envs.babyai.play_wrapper import PlayBabyAIWrapper
 from balrog_demo.wrappers.recorder import Recorder
 
 minigrid.register_minigrid_envs()
@@ -45,6 +46,7 @@ def make_babyai_env(env_name, task, config, render_mode: Optional[str] = None):
 
     env_kwargs = dict()
     env = BabyAITextCleanLangWrapper(env, **env_kwargs)
+    env = PlayBabyAIWrapper(env)
     env = Recorder(env, Path(config.record) / env_name / task)
 
     return env

@@ -7,11 +7,7 @@ import numpy as np
 from balrog_demo.envs import make_env
 
 
-def get_random_action(env, mode, obs):
-    return env.action_space.sample()
-
-
-def play(cfg, get_action=get_random_action):
+def play(cfg):
     render_mode = "human"
     if cfg.no_render:
         render_mode = None
@@ -32,7 +28,7 @@ def play(cfg, get_action=get_random_action):
     start_time = total_start_time
 
     while True:
-        action = get_action(env, cfg.play_mode, obs)
+        action = env.get_wrapper_attr("get_action")(env, cfg.play_mode, obs)
         if action is None:
             break
 
