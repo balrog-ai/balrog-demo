@@ -27,8 +27,8 @@ def add_default_env_args(p: ArgumentParser):
     p.add_argument(
         "--verbose",
         type=str2bool,
-        default=False,
-        help="Number of episodes to play.",
+        default=True,
+        help="Do we print out stuff.",
     )
     p.add_argument("--play-mode", type=str, default="human")
     p.add_argument("--no-render", action="store_true", help="Disables env.render().")
