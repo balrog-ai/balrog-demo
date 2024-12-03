@@ -19,6 +19,7 @@ def add_extra_params_nle_env(parser):
     p.add_argument("--autopickup", type=str, default=None)
     p.add_argument("--vlm", type=str2bool, default=False)
     p.add_argument("--skip_more", type=str2bool, default=True)
+    p.add_argument("--image_tty_render", type=str2bool, default=False)
 
 
 def nle_override_defaults(_env, parser):

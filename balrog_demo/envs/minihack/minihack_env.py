@@ -8,6 +8,7 @@ from balrog.environments.nle import NLELanguageWrapper
 from balrog.environments.wrappers import GymV21CompatibilityV0
 
 from balrog_demo.envs.nle.play_wrapper import PlayNLEWrapper
+from balrog_demo.envs.nle.tty_render import NLEImageTTYRender
 from balrog_demo.wrappers import PlayTextWrapper, Recorder
 
 MINIHACK_ENVS = []
@@ -56,6 +57,9 @@ def make_minihack_env(env_name, task, config, render_mode: Optional[str] = None)
 
     env = GymV21CompatibilityV0(env=env, render_mode=render_mode)
     env = EnvWrapper(env, env_name, task)
+
+    if config.image_tty_render:
+        env = NLEImageTTYRender(env)
 
     if config.text_observation:
         env = PlayTextWrapper(env)
