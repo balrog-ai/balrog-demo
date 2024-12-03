@@ -7,13 +7,14 @@ Record demonstrations for [BALROG](https://github.com/balrog-ai/BALROG)
 conda create -n demo python=3.10 -y
 conda activate demo
 
-pip install git+https://github.com/balrog-ai/BALROG.git
 git clone https://github.com/balrog-ai/balrog-demo.git
 cd balrog-demo
-pip install -e .
+pip install -e .[dev]
+pre-commit install
 
-# run balrog post install
-python -c "import sys,os,subprocess,balrog; subprocess.run([sys.executable, os.path.join(os.path.dirname(balrog.__file__), '..', 'post_install.py')])"
+# install balrog
+pip install git+https://github.com/balrog-ai/BALROG.git
+balrog-post-install
 ```
 
 ### Demonstrations
