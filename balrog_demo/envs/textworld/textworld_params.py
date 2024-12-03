@@ -16,6 +16,7 @@ def add_extra_params_textworld_env(parser):
     p.add_argument("--won", type=str2bool, default=True)
     p.add_argument("--max_episode_steps", type=int, default=80)
     p.add_argument("--textworld_games_path", type=str, default="tw_games")
+    p.add_argument("--image_tty_render", type=str2bool, default=False)
 
 
 def textworld_override_defaults(_env, parser):
