@@ -27,7 +27,7 @@ balrog-post-install
 - we don't save infos
 - example video recorded:
 
-<video src="assets/crafter_demonstration.mp4" controls></video>
+<img src="assets/crafter_demonstration.gif" controls></img>
 
 
 
