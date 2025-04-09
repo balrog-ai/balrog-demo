@@ -40,6 +40,10 @@ def make_env(env_name, task, config, render_mode=None):
         from balrog_demo.envs.babaisai.babaisai_env import make_babaisai_env
 
         base_env = make_babaisai_env(env_name, task, config, render_mode=render_mode)
+    elif env_name == "battleships":
+        from balrog_demo.envs.battleships.battleships_env import make_battleships_env
+
+        base_env = make_battleships_env(env_name, task, config, render_mode=render_mode)
     else:
         raise ValueError(f"Unknown environment: {env_name}")
     return base_env
