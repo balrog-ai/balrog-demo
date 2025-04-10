@@ -18,7 +18,7 @@ def make_pogs_env(env_name, task, config, render_mode: Optional[str] = None):
         num_nodes=config.num_nodes,
         episode_horizon=config.episode_horizon,
         k_nearest=config.k_nearest,
-        min_distance=config.min_distance,
+        min_backtracks=config.min_backtracks,
     )
     env = gym.make(task, **env_kwargs)
     env = POGSWrapper(env)
