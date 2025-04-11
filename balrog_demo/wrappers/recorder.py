@@ -32,7 +32,7 @@ class StatsRecorder(gym.Wrapper):
         self._stats = None
 
     def reset(self, **kwargs):
-        obs, info = super().reset(**kwargs)
+        obs, info = self.env.reset(**kwargs)
         self._length = 0
         self._reward = 0
         self._unlocked = None
@@ -40,7 +40,7 @@ class StatsRecorder(gym.Wrapper):
         return obs, info
 
     def step(self, action):
-        obs, reward, terminated, truncated, info = super().step(action)
+        obs, reward, terminated, truncated, info = self.env.step(action)
         done = terminated or truncated
         self._length += 1
         self._reward += reward
@@ -66,13 +66,13 @@ class VideoRecorder(gym.Wrapper):
         self._frames = None
 
     def reset(self, **kwargs):
-        obs, info = super().reset(**kwargs)
+        obs, info = self.env.reset(**kwargs)
         if obs["image"]:
             self._frames = [obs["image"]]
         return obs, info
 
     def step(self, action):
-        obs, reward, terminated, truncated, info = super().step(action)
+        obs, reward, terminated, truncated, info = self.env.step(action)
         if obs["image"]:
             self._frames.append(obs["image"])
         if terminated or truncated:
@@ -96,7 +96,7 @@ class EpisodeRecorder(gym.Wrapper):
         self._episode = None
 
     def reset(self, **kwargs):
-        obs, info = super().reset(**kwargs)
+        obs, info = self.env.reset(**kwargs)
         transition = {**obs}
         self._episode = [transition]
         return obs, info
@@ -105,7 +105,7 @@ class EpisodeRecorder(gym.Wrapper):
         # Transitions are defined from the environment perspective, meaning that a
         # transition contains the action and the resulting reward and next
         # observation produced by the environment in response to said action.
-        obs, reward, terminated, truncated, info = super().step(action)
+        obs, reward, terminated, truncated, info = self.env.step(action)
         transition = {"action": action, **obs, "reward": reward, "terminated": terminated, "truncated": truncated}
         self._episode.append(transition)
         if terminated or truncated:
@@ -133,14 +133,14 @@ class EpisodeName(gym.Wrapper):
 
     def reset(self, seed=None, **kwargs):
         self._seed = seed
-        obs, info = super().reset(seed=seed, **kwargs)
+        obs, info = self.env.reset(seed=seed, **kwargs)
         self._timestamp = None
         self._length = 0
         self._reward = 0
         return obs, info
 
     def step(self, action):
-        obs, reward, terminated, truncated, info = super().step(action)
+        obs, reward, terminated, truncated, info = self.env.step(action)
         self._length += 1
         self._reward += reward
         if terminated or truncated:
