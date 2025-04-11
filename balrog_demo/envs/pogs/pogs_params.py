@@ -10,7 +10,7 @@ def add_extra_params_pogs_env(parser):
     # TODO: add help
     p = parser
     p.add_argument("--num_nodes", type=int, default=15)
-    p.add_argument("--episode_horizon", type=int, default=30)
+    p.add_argument("--max_episode_steps", type=int, default=30)
     p.add_argument("--k_nearest", type=int, default=3)
     p.add_argument("--min_backtracks", type=int, default=2)
 
