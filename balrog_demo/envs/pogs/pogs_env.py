@@ -15,7 +15,7 @@ def make_pogs_env(env_name, task, config, render_mode: Optional[str] = None):
 
     env_kwargs = dict(
         num_nodes=config.num_nodes,
-        max_episode_steps=config.max_episode_steps,
+        max_steps=config.max_steps,
         k_nearest=config.k_nearest,
         min_backtracks=config.min_backtracks,
     )
