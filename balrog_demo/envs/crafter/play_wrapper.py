@@ -37,6 +37,18 @@ class PlayCrafterWrapper(gym.Wrapper):
         for key, action in keys_to_action.items():
             print(f"  {pygame.key.name(key[0])}: {action}")
 
+    def reset(self, **kwargs):
+        obs = self.env.reset(**kwargs)
+        print(obs["text"]["long_term_context"])
+
+        return obs
+
+    def step(self, action):
+        obs, reward, done, info = self.env.step(action)
+        print(obs["text"]["long_term_context"])
+
+        return obs, reward, done, info
+
     def render(self, mode="human", **kwargs):
         if mode == "human":
             rendered = self.env.render(mode=None)

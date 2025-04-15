@@ -1,4 +1,4 @@
-from balrog.environments.env_wrapper import EnvWrapper
+SUPPORTED_ENVS = ["nle", "minihack", "babyai", "crafter", "textworld", "babaisai", "battleships", "pogs"]
 
 
 def make_env(env_name, task, config, render_mode=None):
@@ -16,9 +16,7 @@ def make_env(env_name, task, config, render_mode=None):
     Raises:
         ValueError: If the environment name is not recognized.
     """
-    supported_envs = ["nle", "minihack", "babyai", "crafter", "textworld", "babaisai", "battleships", "pogs"]
-
-    if env_name not in supported_envs:
+    if env_name not in SUPPORTED_ENVS:
         raise ValueError(f"Unknown environment: {env_name}")
 
     # Dynamically import the appropriate module and call the make_env function
@@ -26,3 +24,17 @@ def make_env(env_name, task, config, render_mode=None):
     make_env_func = getattr(module, f"make_{env_name}_env")
 
     return make_env_func(env_name, task, config, render_mode=render_mode)
+
+
+def get_env_config(env_name: str):
+    if env_name not in SUPPORTED_ENVS:
+        raise ValueError(f"Unknown environment: {env_name}")
+
+    module = __import__(
+        f"balrog_demo.envs.{env_name}.{env_name}_params",
+        fromlist=[f"add_extra_params_{env_name}_env", f"{env_name}_override_defaults"],
+    )
+    param_adder = getattr(module, f"add_extra_params_{env_name}_env")
+    override_defaults = getattr(module, f"{env_name}_override_defaults")
+
+    return param_adder, override_defaults

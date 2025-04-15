@@ -50,7 +50,7 @@ def make_nle_env(env_name, task, config, render_mode: Optional[str] = None):
         kwargs["autopickup"] = config.autopickup
 
     env = gym.make(task, **kwargs)
-    env = NLELanguageWrapper(env, vlm=config.vlm, skip_more=config.skip_more)
+    env = NLELanguageWrapper(env, vlm=config.vlm)
 
     if not config.text_observation:
         env = PlayNLEWrapper(env)
