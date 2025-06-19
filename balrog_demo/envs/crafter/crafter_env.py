@@ -21,7 +21,15 @@ def make_crafter_env(env_name, task, config, render_mode: Optional[str] = None):
     size[1] = size[1] or config.window[1]
 
     env = crafter.Env(area=config.area, size=size, view=config.view, length=config.length, seed=config.seed)
-    env = CrafterLanguageWrapper(env, task, max_episode_steps=env._length)
+    env = CrafterLanguageWrapper(
+        env,
+        task,
+        max_episode_steps=env._length,
+        unique_items=config.unique_items,
+        precise_location=config.precise_location,
+        skip_items=config.skip_items,
+        edge_only_items=config.edge_only_items,
+    )
 
     if not config.text_observation:
         env = PlayCrafterWrapper(env)

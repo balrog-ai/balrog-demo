@@ -18,6 +18,10 @@ def add_extra_params_crafter_env(parser):
     p.add_argument("--fps", type=int, default=5)
     p.add_argument("--wait", type=str2bool, default=False)
     p.add_argument("--death", type=str, default="reset", choices=["continue", "reset", "quit"])
+    p.add_argument("--unique_items", type=str2bool, default=False)
+    p.add_argument("--precise_location", type=str2bool, default=True)
+    p.add_argument("--skip_items", type=str, default=[])
+    p.add_argument("--edge_only_items", type=str, default=[])
 
 
 def crafter_override_defaults(_env, parser):
